@@ -108,6 +108,12 @@ type
   DosQObjectConnectLambdaCallback = proc(data: pointer, numArguments: cint, arguments: ptr DosQVariantArray) {.cdecl.}
   DosQMetaObjectInvokeMethodCallback = proc(data: pointer) {.cdecl.}
 
+  DosQEventLoopProcessEventFlag = enum
+    DosQEventLoopProcessEventFlagProcessAllEvents
+    DosQEventLoopProcessEventFlagExcludeUserInputEvents
+    DosQEventLoopProcessEventFlagProcessExcludeSocketNotifiers
+    DosQEventLoopProcessEventFlagProcessAllEventsWaitForMoreEvents
+
 # Conversion
 proc resetToNil[T](x: var T) = x = nil.pointer.T
 proc isNil(x: DosQMetaObject): bool = x.pointer.isNil
@@ -125,6 +131,8 @@ proc dos_chararray_delete(str: cstring) {.cdecl, dynlib: dynLibName, importc.}
 
 # QCoreApplication
 proc dos_qcoreapplication_application_dir_path(): cstring {.cdecl, dynlib: dynLibName, importc.}
+proc dos_qcoreapplication_process_events(flags: DosQEventLoopProcessEventFlag)  {.cdecl, dynlib: dynLibName, importc.}
+proc dos_qcoreapplication_process_events_timed(flags: DosQEventLoopProcessEventFlag, ms: cint)  {.cdecl, dynlib: dynLibName, importc.}
 
 # QApplication
 proc dos_qapplication_create() {.cdecl, dynlib: dynLibName, importc.}
